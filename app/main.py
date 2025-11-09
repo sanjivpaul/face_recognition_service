@@ -145,7 +145,7 @@ def verify_faces(image1: UploadFile = File(...), image2: UploadFile = File(...))
         "confidence": confidence
     }
 # ----------------------------
-# Run locally
+# Run locally Version v1.0.1
 # ----------------------------
 # Use: uvicorn app.main:app --reload
 # Then test:
