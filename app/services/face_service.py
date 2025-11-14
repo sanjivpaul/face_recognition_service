@@ -9,7 +9,12 @@ def extract_embedding_from_image(img):
     encodings = face_recognition.face_encodings(rgb)
     if not encodings:
         return None
-    return encodings[0].tolist()
+    # return encodings[0].tolist()
+    
+    embedding = encodings[0]
+    # L2 normalize
+    embedding = embedding / np.linalg.norm(embedding)
+    return embedding.tolist()
 
 def verify_faces(img1, img2):
     rgb1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)

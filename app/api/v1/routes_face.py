@@ -19,6 +19,7 @@ def extract_embedding(image: UploadFile = File(...)):
     return {
         "embedding": embedding,
         "model_version": settings.MODEL_VERSION,
+        "embedding_version": "v1",  # manually track changes
         "timestamp": ts
     }
 
