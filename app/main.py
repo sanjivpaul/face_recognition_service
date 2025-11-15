@@ -154,19 +154,48 @@
 
 
 
+# from fastapi import FastAPI
+# from app.api.v1.routes_face import router as face_router
+# from app.core.config import settings
+
+# app = FastAPI(
+#     title="Facial Recognition Microservice",
+#     version="1.0.0",
+#     description="Enterprise-grade API for face embedding & verification"
+# )
+
+# # Register routes
+# app.include_router(face_router, prefix="/api/v1", tags=["Face Recognition"])
+
+# @app.get("/")
+# def root():
+#     return {"status": "running", "service": settings.PROJECT_NAME}
+
+
+import asyncio
 from fastapi import FastAPI
 from app.api.v1.routes_face import router as face_router
-from app.core.config import settings
+from app.api.v1.face_quality_api import router as quality_router  # ⬅ NEW IMPORT
+from app.services.embedding_worker import run_worker
+from app.services.kafka_consumer import consumer  # initializes consumer
 
-app = FastAPI(
-    title="Facial Recognition Microservice",
-    version="1.0.0",
-    description="Enterprise-grade API for face embedding & verification"
-)
+app = FastAPI()
 
-# Register routes
+@app.on_event("startup")
+async def startup_event():
+    print("🚀 Starting background services...")
+
+    # Start worker in background thread
+    loop = asyncio.get_event_loop()
+    loop.run_in_executor(None, run_worker)
+
+    print("🧠 Embedding worker started")
+    print("✔ Kafka consumer initialized")
+
 app.include_router(face_router, prefix="/api/v1", tags=["Face Recognition"])
+app.include_router(quality_router, prefix="/api/v1", tags=["Face Quality"]) 
 
 @app.get("/")
 def root():
-    return {"status": "running", "service": settings.PROJECT_NAME}
+    return {"status": "running"}
+

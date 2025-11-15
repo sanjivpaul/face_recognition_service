@@ -14,7 +14,8 @@ def extract_embedding_from_image(img):
     embedding = encodings[0]
     # L2 normalize
     embedding = embedding / np.linalg.norm(embedding)
-    return embedding.tolist()
+    # return embedding.tolist()
+    return embedding # <-- return NumPy array, not list
 
 def verify_faces(img1, img2):
     rgb1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)

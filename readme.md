@@ -13,3 +13,9 @@ source .venv/bin/activate
 ```bash
 uvicorn app.main:app --reload
 ```
+
+### run kafka
+
+```bash
+python -m app.services.embedding_worker
+```

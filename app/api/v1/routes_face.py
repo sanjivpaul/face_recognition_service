@@ -1,11 +1,16 @@
-from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi import APIRouter, File, UploadFile, HTTPException, WebSocket
 from app.models.schemas import EmbeddingResponse, VerificationResponse
 from app.utils.image_utils import load_image
 from app.services.face_service import extract_embedding_from_image, verify_faces
+from app.services.streaming import face_stream
 from app.core.config import settings
 import datetime
 
 router = APIRouter()
+
+@router.websocket("/ws/attendance")
+async def websocket_attendance(ws: WebSocket):
+    await face_stream(ws)
 
 @router.post("/embed", response_model=EmbeddingResponse)
 def extract_embedding(image: UploadFile = File(...)):
