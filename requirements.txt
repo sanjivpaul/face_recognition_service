@@ -13,3 +13,7 @@ confluent-kafka
 # stream 
 websockets
 scipy
+mtcnn
+insightface
+# tensorflow-macos
+
